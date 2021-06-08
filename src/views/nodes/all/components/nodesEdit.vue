@@ -5,12 +5,15 @@
     width="500px"
     @close="close"
   >
+    <el-divider content-position="left">
+      这里就不具体写了，请自行完善
+    </el-divider>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="标题" prop="title">
-        <el-input v-model.trim="form.title" autocomplete="off"></el-input>
+      <el-form-item label="name" prop="name">
+        <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="作者" prop="author">
-        <el-input v-model.trim="form.author" autocomplete="off"></el-input>
+      <el-form-item label="路径" prop="path">
+        <el-input v-model="form.path" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -21,19 +24,15 @@
 </template>
 
 <script>
-  import { doEdit } from '@/api/table'
+  import { doEdit } from '@/api/menuManagement'
 
   export default {
-    name: 'TableEdit',
+    name: 'NodesEdit',
     data() {
       return {
-        form: {
-          title: '',
-          author: '',
-        },
+        form: {},
         rules: {
-          title: [{ required: true, trigger: 'blur', message: '请输入标题' }],
-          author: [{ required: true, trigger: 'blur', message: '请输入作者' }],
+          id: [{ required: true, trigger: 'blur', message: '请输入路径' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -54,17 +53,14 @@
         this.$refs['form'].resetFields()
         this.form = this.$options.data().form
         this.dialogFormVisible = false
-        this.$emit('fetch-data')
       },
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             const { msg } = await doEdit(this.form)
             this.$baseMessage(msg, 'success')
-            this.$refs['form'].resetFields()
-            this.dialogFormVisible = false
             this.$emit('fetch-data')
-            this.form = this.$options.data().form
+            this.close()
           } else {
             return false
           }
