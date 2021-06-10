@@ -35,7 +35,7 @@ module.exports = [
       return {
         code: 200,
         msg: 'success',
-        data: { accessToken },
+        data: { token: accessToken },
       }
     },
   },

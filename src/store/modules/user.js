@@ -45,10 +45,13 @@ const actions = {
     commit('setPermissions', permissions)
   },
   async login({ commit }, userInfo) {
+    console.log('prepare login')
     const { data } = await login(userInfo)
+    console.log('login repsonse:', data)
     const accessToken = data[tokenName]
     if (accessToken) {
       commit('setAccessToken', accessToken)
+      console.log('access token:', accessToken)
       const hour = new Date().getHours()
       const thisTime =
         hour < 8

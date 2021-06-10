@@ -7,7 +7,7 @@ export async function login(data) {
     data = await encryptedData(data)
   }
   return request({
-    url: '/login',
+    url: '/auth/login',
     method: 'post',
     data,
   })

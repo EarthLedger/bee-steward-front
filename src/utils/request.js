@@ -25,6 +25,7 @@ let loadingInstance
  * @param {*} msg
  */
 const handleCode = (code, msg) => {
+  console.log('handleCode:', code, msg)
   switch (code) {
     case invalidCode:
       Vue.prototype.$baseMessage(msg || `后端接口${code}异常`, 'error')
@@ -48,12 +49,15 @@ const instance = axios.create({
   headers: {
     'Content-Type': contentType,
   },
+  withCredentials: true,
 })
 
 instance.interceptors.request.use(
   (config) => {
     if (store.getters['user/accessToken']) {
       config.headers[tokenName] = store.getters['user/accessToken']
+      //config.headers['Cookie'] = `auth=${store.getters['user/accessToken']}`
+      console.log('req header:', config.headers)
     }
     //这里会过滤所有为空、0、false的key，如果不需要请自行注释
     if (config.data)
@@ -98,6 +102,7 @@ instance.interceptors.response.use(
     }
   },
   (error) => {
+    console.log('res error:', error)
     if (loadingInstance) loadingInstance.close()
     const { response, message } = error
     if (error.response && error.response.data) {
