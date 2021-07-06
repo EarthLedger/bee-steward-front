@@ -1,32 +1,5 @@
 <template>
   <div class="userManagement-container">
-    <vab-query-form>
-      <vab-query-form-left-panel :span="12">
-        <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
-          添加
-        </el-button>
-        <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
-          批量删除
-        </el-button>
-      </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="12">
-        <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-          <el-form-item>
-            <el-input
-              v-model.trim="queryForm.username"
-              placeholder="请输入用户名"
-              clearable
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </vab-query-form-right-panel>
-    </vab-query-form>
-
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -119,8 +92,7 @@
         elementLoadingText: '正在加载...',
         queryForm: {
           pageNo: 1,
-          pageSize: 10,
-          username: '',
+          pageSize: 20,
         },
       }
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-alert
-      title="beautiful boys and girls欢迎加入vue-admin-beautifulQQ群：972435319"
+      title="SWARM节点管理系统"
       type="success"
       :closable="false"
       style="position: fixed"
@@ -18,8 +18,8 @@
           class="login-form"
           label-position="left"
         >
-          <div class="title">hello !</div>
-          <div class="title-tips">欢迎来到{{ title }}！</div>
+          <div class="title"></div>
+          <div class="title-tips">{{ title }}登录</div>
           <el-form-item style="margin-top: 40px" prop="username">
             <span class="svg-container svg-container-admin">
               <vab-icon :icon="['fas', 'user']" />
@@ -64,9 +64,6 @@
           >
             登录
           </el-button>
-          <router-link to="/register">
-            <div style="margin-top: 20px">注册</div>
-          </router-link>
         </el-form>
       </el-col>
     </el-row>
@@ -143,11 +140,11 @@
       document.body.style.overflow = 'auto'
     },
     mounted() {
-      this.form.username = 'admin'
+      /*this.form.username = 'admin'
       this.form.password = '123456'
       setTimeout(() => {
         this.handleLogin()
-      }, 3000)
+      }, 3000)*/
     },
     methods: {
       handlePassword() {

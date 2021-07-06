@@ -18,7 +18,7 @@ const setting = {
       ? 'http://localhost:3000/api/v1'
       : 'vab-mock-server',
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
-  title: 'vue-admin-beautiful-pro',
+  title: 'SWARM 节点管理',
   //简写
   abbreviation: 'vab',
   //开发环境端口号

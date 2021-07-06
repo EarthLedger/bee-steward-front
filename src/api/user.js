@@ -15,10 +15,11 @@ export async function login(data) {
 
 export function getUserInfo(accessToken) {
   return request({
-    url: '/userInfo',
-    method: 'post',
+    url: '/user/info',
+    method: 'get',
     data: {
-      [tokenName]: accessToken,
+      // no need here, if already login, req will append token auto
+      // [tokenName]: accessToken,
     },
   })
 }

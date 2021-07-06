@@ -77,7 +77,22 @@ const actions = {
       Vue.prototype.$baseMessage('验证失败，请重新登录...', 'error')
       return false
     }
-    let { permissions, username, avatar } = data
+    //let { permissions, username, avatar } = data
+    let { username, role } = data
+    let permissions = []
+    switch (role) {
+      case 'admin':
+        permissions = ['admin', 'cstm', 'sub']
+        break
+      case 'cstm':
+        permissions = ['cstm', 'sub']
+        break
+      case 'sub':
+        permissions = ['sub']
+        break
+    }
+    let avatar = 'https://i.gtimg.cn/club/item/face/img/8/15918_100.gif'
+
     if (permissions && username && Array.isArray(permissions)) {
       commit('setPermissions', permissions)
       commit('setUsername', username)

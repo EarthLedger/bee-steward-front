@@ -83,7 +83,11 @@ export const asyncRoutes = [
     component: Layout,
     redirect: 'noRedirect',
     name: 'NodesManagement',
-    meta: { title: '节点管理', icon: 'users-cog', permissions: ['admin'] },
+    meta: {
+      title: '节点管理',
+      icon: 'users-cog',
+      permissions: ['admin', 'cstm', 'sub'],
+    },
     children: [
       {
         path: 'all',

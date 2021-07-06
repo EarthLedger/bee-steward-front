@@ -2,8 +2,14 @@ import request from '@/utils/request'
 
 export function getList(data) {
   return request({
-    url: '/nodes',
+    url: '/node/list',
     method: 'post',
-    data,
+    data: {
+      page: {
+        current: data.pageNo,
+        size: data.pageSize,
+      },
+      order: undefined,
+    },
   })
 }
