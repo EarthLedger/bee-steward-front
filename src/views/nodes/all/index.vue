@@ -9,58 +9,39 @@
       <el-table-column show-overflow-tooltip type="selection"></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="address"
+        prop="info.address"
         label="节点地址"
       ></el-table-column>
-      <el-table-column show-overflow-tooltip prop="status" label="运行状态">
-        <template #default="{ row }">
-          <el-tag v-for="(item, index) in row.status" :key="index">
-            {{ item }}
-          </el-tag>
-        </template>
-      </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="connections"
+        prop="info.peers"
         label="连接数"
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="cheque_received_count"
+        prop="cheque_count"
         label="支票数量"
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="cheque_balance_total"
-        label="支票总额"
+        prop="received_cheque_balance"
+        label="支票总额(xBZZ)"
       ></el-table-column>
-      <el-table-column show-overflow-tooltip prop="sub_user" label="所属子用户">
-        <template #default="{ row }">
-          <el-tag v-for="(item, index) in row.sub_user" :key="index">
-            {{ item }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column show-overflow-tooltip label="权限">
-        <template #default="{ row }">
-          <el-tag v-for="(item, index) in row.permissions" :key="index">
-            {{ item }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
       <el-table-column
         show-overflow-tooltip
-        prop="datatime"
-        label="修改时间"
+        prop="node.sub"
+        label="所属子用户"
       ></el-table-column>
-      <el-table-column show-overflow-tooltip label="操作" width="200">
-        <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="node.cluster"
+        label="所属集群"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="node.area"
+        label="所在区域"
+      ></el-table-column>
     </el-table>
     <el-pagination
       background
@@ -77,6 +58,7 @@
 
 <script>
   import { getList } from '@/api/node'
+  import { formatBig } from '@/utils/bigNum'
   import Edit from './components/nodesEdit.vue'
 
   export default {
@@ -145,9 +127,32 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data, totalCount } = await getList(this.queryForm)
-        this.list = data
-        this.total = totalCount
+        //const { data, totalCount } = await getList(this.queryForm)
+        /*this.list = data
+        this.total = totalCount*/
+        const { data } = await getList(this.queryForm)
+        console.log('result:', data)
+        // extract balance info
+        data.nodes.forEach((node) => {
+          node.received_cheque_balance = BigInt(0)
+          let cheques = []
+          node.info.cheques.forEach((cheque) => {
+            if (cheque.lastreceived) {
+              cheques.push({
+                chequebook: cheque.lastreceived.chequebook,
+                payout: cheque.lastreceived.payout,
+                peer: cheque.peer,
+              })
+              node.received_cheque_balance += BigInt(cheque.lastreceived.payout)
+            }
+          })
+          node.received_cheque_balance = formatBig(node.received_cheque_balance)
+          node.cheque_count = cheques.length
+        })
+
+        this.list = data.nodes
+        this.total = data.total
+
         setTimeout(() => {
           this.listLoading = false
         }, 300)

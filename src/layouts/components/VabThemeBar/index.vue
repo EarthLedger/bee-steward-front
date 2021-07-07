@@ -5,12 +5,6 @@
       :icon="['fas', 'palette']"
       @click="handleOpenThemeBar"
     />
-    <div class="theme-bar-setting">
-      <div @click="handleOpenThemeBar">
-        <vab-icon :icon="['fas', 'palette']" />
-        <p>主题配置</p>
-      </div>
-    </div>
 
     <el-drawer
       title="主题配置"
