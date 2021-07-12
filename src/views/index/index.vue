@@ -1,78 +1,6 @@
 <template>
   <div class="index-container">
     <el-row :gutter="20">
-      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-        <el-alert v-if="noticeList[0]" :closable="noticeList[0].closable">
-          <!--<div
-            style="display: flex; align-items: center; justify-content: center"
-          >
-            <a
-              target="_blank"
-              href="https://github.com/chuzhixin/vue-admin-beautiful"
-            >
-              <img
-                style="margin-right: 10px"
-                src="https://img.shields.io/github/stars/chuzhixin/vue-admin-beautiful?style=flat-square&label=Stars&logo=github"
-              />
-            </a>
-            <p v-html="noticeList[0].title"></p>
-          </div>-->
-        </el-alert>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6">
-        <el-card shadow="never">
-          <div slot="header">
-            <span>访问量</span>
-          </div>
-          <vab-chart
-            :autoresize="true"
-            theme="vab-echarts-theme"
-            :options="fwl"
-          />
-          <div class="bottom">
-            <span>
-              日均访问量:
-
-              <vab-count
-                :start-val="config1.startVal"
-                :end-val="config1.endVal"
-                :duration="config1.duration"
-                :separator="config1.separator"
-                :prefix="config1.prefix"
-                :suffix="config1.suffix"
-                :decimals="config1.decimals"
-              />
-            </span>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6">
-        <el-card shadow="never">
-          <div slot="header">
-            <span>授权数</span>
-          </div>
-          <vab-chart
-            :autoresize="true"
-            theme="vab-echarts-theme"
-            :options="sqs"
-          />
-          <div class="bottom">
-            <span>
-              总授权数:
-              <vab-count
-                :start-val="config2.startVal"
-                :end-val="config2.endVal"
-                :duration="config2.duration"
-                :separator="config2.separator"
-                :prefix="config2.prefix"
-                :suffix="config2.suffix"
-                :decimals="config2.decimals"
-              />
-            </span>
-          </div>
-        </el-card>
-      </el-col>
-
       <el-col
         v-for="(item, index) in iconList"
         :key="index"
@@ -82,32 +10,13 @@
         :lg="3"
         :xl="3"
       >
-        <router-link :to="item.link" target="_blank">
-          <el-card class="icon-panel" shadow="never">
-            <vab-icon
-              :style="{ color: item.color }"
-              :icon="['fas', item.icon]"
-            ></vab-icon>
-            <p>{{ item.title }}</p>
-          </el-card>
-        </router-link>
-      </el-col>
-
-      <el-col :xs="24" :sm="24" :md="13" :lg="13" :xl="13">
-        <el-card class="card" shadow="never">
-          <div slot="header">
-            <span>更新日志</span>
-          </div>
-          <el-timeline :reverse="reverse">
-            <el-timeline-item
-              v-for="(activity, index) in activities"
-              :key="index"
-              :timestamp="activity.timestamp"
-              :color="activity.color"
-            >
-              {{ activity.content }}
-            </el-timeline-item>
-          </el-timeline>
+        <el-card class="icon-panel" shadow="never">
+          <vab-icon
+            :style="{ color: item.color }"
+            :icon="['fas', item.icon]"
+          ></vab-icon>
+          <p>{{ item.title }}</p>
+          <p class="statics-value">{{ item.value }}</p>
         </el-card>
       </el-col>
     </el-row>
@@ -115,13 +24,14 @@
 </template>
 
 <script>
+  import xhr from '@/utils/xhr'
   import VabChart from '@/plugins/echarts'
   import { dependencies, devDependencies } from '../../../package.json'
 
   export default {
     name: 'Index',
     components: {
-      VabChart,
+      //VabChart,
     },
     data() {
       return {
@@ -158,208 +68,6 @@
           duration: 8000,
         },
 
-        //访问量
-        fwl: {
-          grid: {
-            top: '4%',
-            left: '2%',
-            right: '4%',
-            bottom: '0%',
-            containLabel: true,
-          },
-          xAxis: [
-            {
-              type: 'category',
-              boundaryGap: false,
-              data: [],
-              axisTick: {
-                alignWithLabel: true,
-              },
-            },
-          ],
-          yAxis: [
-            {
-              type: 'value',
-            },
-          ],
-          series: [
-            {
-              name: '访问量',
-              type: 'line',
-              data: [],
-              smooth: true,
-              areaStyle: {},
-            },
-          ],
-        },
-        //授权数
-        sqs: {
-          grid: {
-            top: '4%',
-            left: '2%',
-            right: '4%',
-            bottom: '0%',
-            containLabel: true,
-          },
-          xAxis: [
-            {
-              type: 'category',
-              /*boundaryGap: false,*/
-              data: ['0时', '4时', '8时', '12时', '16时', '20时', '24时'],
-              axisTick: {
-                alignWithLabel: true,
-              },
-            },
-          ],
-          yAxis: [
-            {
-              type: 'value',
-            },
-          ],
-          series: [
-            {
-              name: '授权数',
-              type: 'bar',
-              barWidth: '60%',
-              data: [10, 52, 20, 33, 39, 33, 22],
-            },
-          ],
-        },
-        //词云
-        cy: {
-          grid: {
-            top: '4%',
-            left: '2%',
-            right: '4%',
-            bottom: '0%',
-          },
-          series: [
-            {
-              type: 'wordCloud',
-              gridSize: 15,
-              sizeRange: [12, 40],
-              rotationRange: [0, 0],
-              width: '100%',
-              height: '100%',
-              textStyle: {
-                normal: {
-                  color() {
-                    const arr = [
-                      '#5470c6',
-                      '#91cc75',
-                      '#fac858',
-                      '#ee6666',
-                      '#73c0de',
-                      '#975FE5',
-                    ]
-                    let index = Math.floor(Math.random() * arr.length)
-                    return arr[index]
-                  },
-                },
-              },
-              data: [
-                {
-                  name: 'vue-admin-beautiful',
-                  value: 15000,
-                },
-                {
-                  name: 'element',
-                  value: 10081,
-                },
-                {
-                  name: 'beautiful',
-                  value: 9386,
-                },
-
-                {
-                  name: 'vue',
-                  value: 6500,
-                },
-                {
-                  name: 'chuzhixin',
-                  value: 6000,
-                },
-                {
-                  name: 'good',
-                  value: 4500,
-                },
-                {
-                  name: 'success',
-                  value: 3800,
-                },
-                {
-                  name: 'never',
-                  value: 3000,
-                },
-                {
-                  name: 'boy',
-                  value: 2500,
-                },
-                {
-                  name: 'girl',
-                  value: 2300,
-                },
-                {
-                  name: 'github',
-                  value: 2000,
-                },
-                {
-                  name: 'hbuilder',
-                  value: 1900,
-                },
-                {
-                  name: 'dcloud',
-                  value: 1800,
-                },
-                {
-                  name: 'china',
-                  value: 1700,
-                },
-                {
-                  name: '1204505056',
-                  value: 1600,
-                },
-                {
-                  name: '972435319',
-                  value: 1500,
-                },
-                {
-                  name: 'young',
-                  value: 1200,
-                },
-                {
-                  name: 'old',
-                  value: 1100,
-                },
-                {
-                  name: 'vuex',
-                  value: 900,
-                },
-                {
-                  name: 'router',
-                  value: 800,
-                },
-                {
-                  name: 'money',
-                  value: 700,
-                },
-                {
-                  name: 'qingdao',
-                  value: 800,
-                },
-                {
-                  name: 'yantai',
-                  value: 9000,
-                },
-                {
-                  name: 'author is very cool',
-                  value: 9200,
-                },
-              ],
-            },
-          ],
-        },
-
         //更新日志
         reverse: true,
         activities: [],
@@ -370,7 +78,7 @@
         iconList: [
           {
             icon: 'video',
-            title: '视频播放器',
+            title: '全网节点数',
             link: '/vab/player',
             color: '#ffc069',
           },
@@ -426,39 +134,7 @@
     beforeDestroy() {
       clearInterval(this.timer)
     },
-    mounted() {
-      let base = +new Date(2020, 1, 1)
-      let oneDay = 24 * 3600 * 1000
-      let date = []
-
-      let data = [Math.random() * 1500]
-      let now = new Date(base)
-
-      const addData = (shift) => {
-        now = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/')
-        date.push(now)
-        data.push(this.$baseLodash.random(20000, 60000))
-
-        if (shift) {
-          date.shift()
-          data.shift()
-        }
-
-        now = new Date(+new Date(now) + oneDay)
-      }
-
-      for (let i = 1; i < 6; i++) {
-        addData()
-      }
-      addData(true)
-      this.fwl.xAxis[0].data = date
-      this.fwl.series[0].data = data
-      this.timer = setInterval(() => {
-        addData(true)
-        this.fwl.xAxis[0].data = date
-        this.fwl.series[0].data = data
-      }, 3000)
-    },
+    mounted() {},
     methods: {
       handleClick(e) {
         this.$baseMessage(`点击了${e.name},这里可以写跳转`)
@@ -468,28 +144,63 @@
         this.$baseEventBus.$emit('theme')
       },
       async fetchData() {
-        /*const { data } = await getList()
-        data.map((item, index) => {
-          if (index === data.length - 1) {
-            item.color = '#0bbd87'
-          }
-        })
-        this.activities = data
-        const res = await getNoticeList()
-        this.noticeList = res.data*/
-        /* getRepos({
-        token: "1061286824f978ea3cf98b7b8ea26fe27ba7cea1",
-      }).then((res) => {
-        const per_page = Math.ceil(res.data.stargazers_count / 100);
-        alert(per_page);
-        getStargazers({
-          token: "1061286824f978ea3cf98b7b8ea26fe27ba7cea1",
-          page: 1,
-          per_page: res.per_page,
-        }).then((res) => {
-          alert(JSON.stringify(res));
-        });
-      }); */
+        // load external statistics data
+        // https://api.nrgh.com.cn/swarmCount/nodesAndCheque
+        let data = await xhr(
+          'GET',
+          'https://api.nrgh.com.cn/swarmCount/nodesAndCheque'
+        )
+
+        let statistics = JSON.parse(data)
+        console.log('statistics:', statistics)
+        let entry = []
+        // 全网节点数
+        entry[0] = {
+          value: statistics.data.totalStatistics.nodeCount,
+          icon: 'network-wired',
+          title: '全网节点数',
+          color: '#ffc069',
+        }
+        // 24小时新增节点
+        entry[1] = {
+          value: statistics.data.statisticsIn24h.nodeCount,
+          icon: 'plus',
+          title: '24小时新增节点',
+          color: '#5cdbd3',
+        }
+        // 24小时出票
+        entry[2] = {
+          value: statistics.data.statisticsIn24h.chequeCount,
+          icon: 'clipboard-check',
+          title: '24小时出票',
+          color: '#b37feb',
+        }
+
+        // 全网出票节点
+        entry[3] = {
+          value: statistics.data.totalStatistics.activeNodeCount,
+          icon: 'clipboard-check',
+          title: '全网出票节点',
+          color: '#69c0ff',
+        }
+
+        // 24小时出票节点
+        entry[4] = {
+          value: statistics.data.statisticsIn24h.activeNodeCount,
+          icon: 'network-wired',
+          title: '24小时出票节点',
+          color: '#ff85c0',
+        }
+
+        // 24小时BZZ兑换
+        entry[5] = {
+          value: statistics.data.statisticsIn24h.bzzCount,
+          icon: 'sync',
+          title: '24小时BZZ兑换',
+          color: '#ff9c6e',
+        }
+
+        this.iconList = entry
       },
     },
   }
@@ -581,6 +292,11 @@
       button {
         margin: 5px 10px 15px 0;
       }
+    }
+
+    .statics-value {
+      font-size: 11px;
+      font-weight: bold;
     }
   }
 </style>

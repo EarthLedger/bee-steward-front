@@ -5,9 +5,6 @@
         <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
           添加
         </el-button>
-        <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
-          批量删除
-        </el-button>
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="12">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
@@ -44,16 +41,10 @@
         prop="username"
         label="用户名"
       ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        prop="role"
-        label="权限"
-      ></el-table-column>
 
       <el-table-column show-overflow-tooltip label="操作" width="200">
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

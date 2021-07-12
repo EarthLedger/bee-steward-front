@@ -38,7 +38,7 @@
         prop="received_cheque_balance"
         label="支票总额(xBZZ)"
       ></el-table-column>
-      <el-table-column
+      <!--<el-table-column
         show-overflow-tooltip
         prop="cheque_exchanged"
         label="已兑换总额(xBZZ)"
@@ -47,7 +47,7 @@
         show-overflow-tooltip
         prop="cheque_rest"
         label="未兑换总额(xBZZ)"
-      ></el-table-column>
+      ></el-table-column>-->
       <el-table-column
         show-overflow-tooltip
         prop="sub_user"
@@ -83,7 +83,7 @@
   import Edit from './components/nodesEdit.vue'
 
   export default {
-    name: 'UserManagement',
+    name: 'NodesManagement',
     components: { Edit },
     data() {
       return {

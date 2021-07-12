@@ -41,8 +41,8 @@ export const asyncRoutes = [
         name: 'Index',
         component: () => import('@/views/index/index'),
         meta: {
-          title: '首页',
-          icon: 'home',
+          title: '全网信息',
+          icon: 'tachometer-alt',
           affix: true,
         },
       },
@@ -64,15 +64,15 @@ export const asyncRoutes = [
         name: 'UserManagement',
         component: () =>
           import('@/views/personnelManagement/userManagement/index'),
-        meta: { title: '用户管理' },
+        meta: { title: '用户管理', icon: 'users-cog' },
       },
-      {
+      /*{
         path: 'roleManagement',
         name: 'RoleManagement',
         component: () =>
           import('@/views/personnelManagement/roleManagement/index'),
         meta: { title: '角色管理', permissions: ['admin'] },
-      },
+      },*/
     ],
   },
   {
@@ -82,7 +82,7 @@ export const asyncRoutes = [
     name: 'NodesManagement',
     meta: {
       title: '节点管理',
-      icon: 'users-cog',
+      icon: 'network-wired',
       permissions: ['admin', 'cstm', 'sub'],
     },
     children: [
@@ -90,13 +90,7 @@ export const asyncRoutes = [
         path: 'all',
         name: 'AllNodes',
         component: () => import('@/views/nodes/all/index'),
-        meta: { title: '全部节点' },
-      },
-      {
-        path: 'subs',
-        name: 'SubNodes',
-        component: () => import('@/views/nodes/subs/index'),
-        meta: { title: '子用户节点', permissions: ['admin', 'cstm'] },
+        meta: { title: '节点状态', icon: 'network-wired' },
       },
     ],
   },

@@ -15,11 +15,31 @@ export function getList(data) {
 }
 
 export function doEdit(data) {
-  return request({
-    url: '/user/update',
-    method: 'post',
-    data,
-  })
+  console.log('user create/edit:', data)
+  // create or update
+  if (data.id) {
+    // update
+    return request({
+      url: `/user/${data.id}/update`,
+      method: 'post',
+      data: {
+        username: data.username,
+        password: data.password,
+        role: 'sub',
+      },
+    })
+  } else {
+    // create
+    return request({
+      url: '/user/create',
+      method: 'post',
+      data: {
+        username: data.username,
+        password: data.password,
+        role: 'sub',
+      },
+    })
+  }
 }
 
 export function doDelete(data) {

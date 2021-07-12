@@ -16,12 +16,6 @@
           autocomplete="off"
         ></el-input>
       </el-form-item>
-      <el-form-item label="权限" prop="permissions">
-        <el-checkbox-group v-model="form.permissions">
-          <el-checkbox label="admin"></el-checkbox>
-          <el-checkbox label="editor"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
@@ -50,10 +44,10 @@
           password: [
             { required: true, trigger: 'blur', message: '请输入密码' },
           ],
-          email: [{ required: true, trigger: 'blur', message: '请输入邮箱' }],
+          /*email: [{ required: true, trigger: 'blur', message: '请输入邮箱' }],
           permissions: [
             { required: true, trigger: 'blur', message: '请选择权限' },
-          ],
+          ],*/
         },
         title: '',
         dialogFormVisible: false,
