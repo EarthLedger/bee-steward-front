@@ -53,7 +53,11 @@ export const asyncRoutes = [
     component: Layout,
     redirect: 'noRedirect',
     name: 'PersonnelManagement',
-    meta: { title: '用户管理', icon: 'users-cog', permissions: ['admin'] },
+    meta: {
+      title: '用户管理',
+      icon: 'users-cog',
+      permissions: ['admin', 'cstm'],
+    },
     children: [
       {
         path: 'userManagement',
@@ -67,14 +71,7 @@ export const asyncRoutes = [
         name: 'RoleManagement',
         component: () =>
           import('@/views/personnelManagement/roleManagement/index'),
-        meta: { title: '角色管理' },
-      },
-      {
-        path: 'menuManagement',
-        name: 'MenuManagement',
-        component: () =>
-          import('@/views/personnelManagement/menuManagement/index'),
-        meta: { title: '菜单管理', badge: 'New' },
+        meta: { title: '角色管理', permissions: ['admin'] },
       },
     ],
   },
@@ -99,7 +96,7 @@ export const asyncRoutes = [
         path: 'subs',
         name: 'SubNodes',
         component: () => import('@/views/nodes/subs/index'),
-        meta: { title: '子用户节点' },
+        meta: { title: '子用户节点', permissions: ['admin', 'cstm'] },
       },
     ],
   },

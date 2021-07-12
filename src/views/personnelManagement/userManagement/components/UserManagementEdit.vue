@@ -12,12 +12,9 @@
       <el-form-item label="密码" prop="password">
         <el-input
           v-model.trim="form.password"
-          type="password"
+          type="text"
           autocomplete="off"
         ></el-input>
-      </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model.trim="form.email" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="权限" prop="permissions">
         <el-checkbox-group v-model="form.permissions">
@@ -63,6 +60,9 @@
       }
     },
     created() {},
+    mounted() {
+      console.log('create/edit user mounted')
+    },
     methods: {
       showEdit(row) {
         if (!row) {

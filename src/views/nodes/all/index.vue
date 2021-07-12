@@ -9,13 +9,24 @@
       <el-table-column show-overflow-tooltip type="selection"></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="info.address"
+        prop="node.addr"
         label="节点地址"
       ></el-table-column>
+      <el-table-column show-overflow-tooltip label="状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.info" style="color: green">运行中</span>
+          <span v-else style="color: red">离线</span>
+        </template>
+      </el-table-column>
       <el-table-column
         show-overflow-tooltip
         prop="info.peers"
         label="连接数"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="info.depth"
+        label="连接深度"
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
@@ -29,12 +40,22 @@
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="node.sub"
+        prop="cheque_exchanged"
+        label="已兑换总额(xBZZ)"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="cheque_rest"
+        label="未兑换总额(xBZZ)"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="sub_user"
         label="所属子用户"
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="node.cluster"
+        prop="node.server_id"
         label="所属集群"
       ></el-table-column>
       <el-table-column
@@ -134,20 +155,31 @@
         console.log('result:', data)
         // extract balance info
         data.nodes.forEach((node) => {
-          node.received_cheque_balance = BigInt(0)
-          let cheques = []
-          node.info.cheques.forEach((cheque) => {
-            if (cheque.lastreceived) {
-              cheques.push({
-                chequebook: cheque.lastreceived.chequebook,
-                payout: cheque.lastreceived.payout,
-                peer: cheque.peer,
-              })
-              node.received_cheque_balance += BigInt(cheque.lastreceived.payout)
-            }
-          })
-          node.received_cheque_balance = formatBig(node.received_cheque_balance)
-          node.cheque_count = cheques.length
+          // process sub user
+          node.sub_user = node.sub ? node.sub.username : '无'
+          if (node.info) {
+            node.status = '运行中'
+            node.received_cheque_balance = BigInt(0)
+            let cheques = []
+            node.info.cheques.forEach((cheque) => {
+              if (cheque.lastreceived) {
+                cheques.push({
+                  chequebook: cheque.lastreceived.chequebook,
+                  payout: cheque.lastreceived.payout,
+                  peer: cheque.peer,
+                })
+                node.received_cheque_balance += BigInt(
+                  cheque.lastreceived.payout
+                )
+              }
+            })
+            node.received_cheque_balance = formatBig(
+              node.received_cheque_balance
+            )
+            node.cheque_count = cheques.length
+          } else {
+            node.status = '离线'
+          }
         })
 
         this.list = data.nodes

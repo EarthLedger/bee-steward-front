@@ -2,15 +2,21 @@ import request from '@/utils/request'
 
 export function getList(data) {
   return request({
-    url: '/userManagement/getList',
+    url: '/user/list',
     method: 'post',
-    data,
+    data: {
+      page: {
+        current: data.pageNo,
+        size: data.pageSize,
+      },
+      order: undefined,
+    },
   })
 }
 
 export function doEdit(data) {
   return request({
-    url: '/userManagement/doEdit',
+    url: '/user/update',
     method: 'post',
     data,
   })
@@ -18,7 +24,7 @@ export function doEdit(data) {
 
 export function doDelete(data) {
   return request({
-    url: '/userManagement/doDelete',
+    url: '/user/delete',
     method: 'post',
     data,
   })
