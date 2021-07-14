@@ -1,5 +1,5 @@
-export function formatBig(bgInt) {
-  const ACCUR = 16
+export function formatBig(bgInt, accur) {
+  let ACCUR = accur ? accur : 16
   let valStr = bgInt.toString()
   let len = valStr.length
 

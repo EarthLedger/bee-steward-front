@@ -12,6 +12,11 @@
         prop="node.addr"
         label="节点地址"
       ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="info.chequebook_address"
+        label="合约地址"
+      ></el-table-column>
       <el-table-column show-overflow-tooltip label="状态">
         <template slot-scope="scope">
           <span v-if="scope.row.info" style="color: green">运行中</span>
@@ -36,7 +41,27 @@
       <el-table-column
         show-overflow-tooltip
         prop="received_cheque_balance"
-        label="支票总额(xBZZ)"
+        label="支票总额"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="max_peer_balance"
+        label="下次出票水位"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="info.node_xbzz"
+        label="节点xBZZ"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="info.node_xdai"
+        label="节点xDai"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
+        prop="info.chequebook_xbzz"
+        label="合约xBZZ"
       ></el-table-column>
       <!--<el-table-column
         show-overflow-tooltip
@@ -60,7 +85,7 @@
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="node.area"
+        prop="area"
         label="所在区域"
       ></el-table-column>
     </el-table>
@@ -157,6 +182,7 @@
         data.nodes.forEach((node) => {
           // process sub user
           node.sub_user = node.sub ? node.sub.username : '无'
+          node.area = '中国区'
           if (node.info) {
             node.status = '运行中'
             node.received_cheque_balance = BigInt(0)
@@ -177,6 +203,13 @@
               node.received_cheque_balance
             )
             node.cheque_count = cheques.length
+            if (node.info.balances && node.info.balances.length > 0) {
+              node.max_peer_balance = formatBig(node.info.balances[0].balance)
+            }
+
+            node.info.node_xbzz = formatBig(node.info.node_xbzz)
+            node.info.node_xdai = formatBig(node.info.node_xdai, 18)
+            node.info.chequebook_xbzz = formatBig(node.info.chequebook_xbzz)
           } else {
             node.status = '离线'
           }
