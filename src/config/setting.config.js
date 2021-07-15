@@ -16,7 +16,7 @@ const setting = {
   baseURL:
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000/api/v1'
-      : 'http://localhost:3000/api/v1',
+      : 'http://36.250.0.19:7575/api/v1',
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
   title: 'SWARM 节点管理',
   //简写
