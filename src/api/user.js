@@ -3,6 +3,7 @@ import { encryptedData } from '@/utils/encrypt'
 import { loginRSA, tokenName } from '@/config'
 
 export async function login(data) {
+  console.log('api login')
   if (loginRSA) {
     data = await encryptedData(data)
   }

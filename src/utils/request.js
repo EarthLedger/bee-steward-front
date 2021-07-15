@@ -82,6 +82,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
+    console.log('res:', response)
     if (loadingInstance) loadingInstance.close()
 
     const { data, config } = response

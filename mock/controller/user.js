@@ -24,6 +24,7 @@ module.exports = [
     url: '/login',
     type: 'post',
     response(config) {
+      console.log('mock response')
       const { username } = config.body
       const accessToken = accessTokens[username]
       if (!accessToken) {

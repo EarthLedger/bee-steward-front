@@ -34,6 +34,7 @@ process.env.VUE_APP_VERSION = version
 
 const resolve = (dir) => path.join(__dirname, dir)
 const mockServer = () => {
+  console.log('check mock:', process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'development') return require('./mock')
   else return ''
 }

@@ -13,6 +13,7 @@ const { handleMockArray } = require('./utils')
  * @returns {{mockStartIndex: number, mockRoutesLength: number}}
  */
 const registerRoutes = (app) => {
+  console.log('registerRoutes')
   let mockLastIndex
   const mocks = []
   const mockArray = handleMockArray()
