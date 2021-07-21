@@ -206,7 +206,9 @@
             node.cheque_count = cheques.length
             if (node.info.balances && node.info.balances.length > 0) {
               //node.max_peer_balance = formatBig(node.info.balances[0].balance)
-              node.max_peer_balance = node.info.balances[0].balance.toString()
+              let balance = node.info.balances[0].balance.toString()
+              let percent = ((Number(balance) / 100000000) * 100).toFixed(1)
+              node.max_peer_balance = `${percent}% ${balance}`
             }
 
             node.info.node_xbzz = formatBig(node.info.node_xbzz)
