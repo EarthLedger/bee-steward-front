@@ -202,6 +202,8 @@
             /*node.received_cheque_balance = formatBig(
               node.received_cheque_balance
             )*/
+            node.received_cheque_balance =
+              node.received_cheque_balance.toString()
             node.cheque_count = cheques.length
             if (node.info.balances && node.info.balances.length > 0) {
               node.max_peer_balance = formatBig(node.info.balances[0].balance)
