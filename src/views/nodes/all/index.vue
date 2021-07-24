@@ -46,7 +46,7 @@
       <el-table-column
         show-overflow-tooltip
         prop="max_peer_balance"
-        label="下次出票水位"
+        label="MPB"
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
