@@ -5,6 +5,7 @@
       :data="list"
       :element-loading-text="elementLoadingText"
       @selection-change="setSelectRows"
+      @sort-change="tableSortChange"
     >
       <el-table-column show-overflow-tooltip type="selection"></el-table-column>
       <el-table-column
@@ -14,33 +15,38 @@
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="info.chequebook_address"
+        prop="node.cheque_book_addr"
         label="合约地址"
       ></el-table-column>
       <el-table-column show-overflow-tooltip label="状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.info" style="color: green">运行中</span>
+          <span v-if="scope.row.node.run_status" style="color: green">
+            运行中
+          </span>
           <span v-else style="color: red">离线</span>
         </template>
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="info.peers"
+        prop="node.connection"
         label="连接数"
+        sortable
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="info.depth"
+        prop="node.depth"
         label="连接深度"
+        sortable
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="cheque_count"
+        prop="node.cheque_received_count"
         label="支票数量"
+        sortable
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="received_cheque_balance"
+        prop="node.received_cheque_balance"
         label="支票总额"
       ></el-table-column>
       <el-table-column
@@ -50,17 +56,17 @@
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="info.node_xbzz"
+        prop="node.node_bzz"
         label="节点xBZZ"
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="info.node_xdai"
+        prop="node.node_xdai"
         label="节点xDai"
       ></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="info.chequebook_xbzz"
+        prop="node.cheque_bzz"
         label="合约xBZZ"
       ></el-table-column>
       <!--<el-table-column
@@ -121,6 +127,8 @@
         queryForm: {
           pageNo: 1,
           pageSize: 20,
+          sortField: 'created_by',
+          sortDirection: 1,
         },
       }
     },
@@ -128,6 +136,12 @@
       this.fetchData()
     },
     methods: {
+      tableSortChange(data) {
+        console.log('tableSortChange', data, this.queryForm)
+        this.queryForm.sortField = data.prop.split('.')[1]
+        this.queryForm.sortDirection = data.order == 'ascending' ? 0 : 1
+        this.fetchData()
+      },
       setSelectRows(val) {
         this.selectRows = val
       },
@@ -179,11 +193,23 @@
         const { data } = await getList(this.queryForm)
         console.log('result:', data)
         // extract balance info
-        data.nodes.forEach((node) => {
+        data.nodes.forEach((item) => {
+          let node = item.node
+          item.status = node.run_status == 1 ? '运行中' : '离线'
           // process sub user
-          node.sub_user = node.sub ? node.sub.username : '无'
-          node.area = '中国区'
-          if (node.info) {
+          item.sub_user = item.sub ? item.sub.username : '无'
+          item.area = '中国区'
+          node.received_cheque_balance = formatBig(node.cheque_received_balance)
+          let percent = (
+            (Number(node.peer_max_postive_balance) / 100000000) *
+            100
+          ).toFixed(1)
+          item.max_peer_balance = `${percent}% ${node.peer_max_postive_balance}`
+          node.node_bzz = formatBig(node.node_bzz)
+          node.node_xdai = formatBig(node.node_xdai, 18)
+          node.cheque_bzz = formatBig(node.cheque_bzz)
+
+          /*if (node.info) {
             node.status = '运行中'
             node.received_cheque_balance = BigInt(0)
             let cheques = []
@@ -216,7 +242,7 @@
             node.info.chequebook_xbzz = formatBig(node.info.chequebook_xbzz)
           } else {
             node.status = '离线'
-          }
+          }*/
         })
 
         this.list = data.nodes

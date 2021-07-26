@@ -9,7 +9,10 @@ export function getList(data) {
         current: data.pageNo,
         size: data.pageSize,
       },
-      order: undefined,
+      order: {
+        field: data.sortField,
+        sort: data.sortDirection,
+      },
     },
   })
 }
